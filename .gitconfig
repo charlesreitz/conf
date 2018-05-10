@@ -4,7 +4,8 @@
 	lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cd) %C(bold blue)<%an>%Creset' --abbrev-commit --date=format:'%a %d/%m/%Y %H:%M:%S'
 	lgf = log --pretty=format:'==================%n%h - %an - %ai%n%B%nFontes Alterados:' --abbrev-commit --name-only
 	lgr = log --reverse --pretty=format:'==================%n%h - %an - %ai%n%B%nFontes Alterados:' --abbrev-commit --name-only
-	lgos = log --reverse --pretty=format:'==================%n%B%nFontes Alterados:' --abbrev-commit --name-only --author-date-order --author=CHARLES REITZ
+	lgos = log --reverse --pretty=format:'==================%n%B%nFontes Alterados:' --abbrev-commit --name-only --author-date-order --author=CHARLES_REITZ
+	lgos2 = log --pretty=format:'=============================================================================%n%h - %an - %ai%n%B%nFontes Alterados:' --abbrev-commit --name-only --since=1.days
 	aa = add .
 	ci = commit -m
 	ca = commit -a -m
@@ -25,18 +26,21 @@
 	atuMasterDest = "! git syncod master $1 && git mergepush $1 master "
 	syncMasterDest= "! git syncod master $1 "
 	compress=gc
-[diff]
-    tool = default-difftool
-[difftool "default-difftool"]
-    cmd = code -n --wait --diff $LOCAL $REMOTE
-[user]
-	name = CHARLES REITZ 
-	email = charles.reitz@gmail.com
 [core]
-	autocrlf = true
-	editor = code -n --disable-extensions --wait
+	excludesfile = /Users/charlesreitz/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[user]
+	name = Charles Reitz
+	email = charles.reitz@gmail.com
+[commit]
+	template = /Users/charlesreitz/.stCommitMsg
 [filter "lfs"]
+	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
-	required = true
